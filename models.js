@@ -36,4 +36,18 @@ Plot.belongsToMany(Vegetable, { through: 'vegetablePlot' });
 
 Gardener.belongsTo(Vegetable, { as: 'favoriteVegetable' });
 
+Vegetable.create({
+  name: 'Artichoke',
+  color: 'Green',
+  plantedOn: Date.now()
+}).then(Vegetable.create({
+  name: 'Eggplant',
+  color: 'Purple',
+  plantedOn: Date.now()
+})).then(Vegetable.create({
+  name: 'Asparagus',
+  color: 'Green',
+  plantedOn: Date.now() - 10
+}));
+
 module.exports = db;
