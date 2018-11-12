@@ -36,18 +36,28 @@ Plot.belongsToMany(Vegetable, { through: 'vegetablePlot' });
 
 Gardener.belongsTo(Vegetable, { as: 'favoriteVegetable' });
 
-Vegetable.create({
+const art = {
   name: 'Artichoke',
   color: 'Green',
   plantedOn: Date.now()
-}).then(Vegetable.create({
+};
+
+const egg = {
   name: 'Eggplant',
   color: 'Purple',
   plantedOn: Date.now()
-})).then(Vegetable.create({
+};
+
+const asp = {
   name: 'Asparagus',
   color: 'Green',
   plantedOn: Date.now() - 10
-}));
+};
+
+Promise.all([art, egg, asp]).then((vegetables) => {
+  vegetables.forEach((vegetable) => {
+    Vegetable.create(vegetable);
+  });
+});
 
 module.exports = db;
