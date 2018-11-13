@@ -1,5 +1,11 @@
 const db = require('./models');
 
+const {
+  vegetable: Vegetable,
+  plot: Plot,
+  gardener: Gardener
+} = db.models;
+
 db.sync({ force: true })
   .then(() => {
     console.log('Database synced!');

@@ -1,63 +1,42 @@
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost:5432/plantr');
 
-const Gardener = db.define('Gardener', {
+const Gardener = db.define('gardener', {
   name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
   },
   age: {
-    type: Sequelize.INTEGER
-  }
+    type: Sequelize.INTEGER,
+  },
 });
 
-const Plot = db.define('Plot', {
+const Plot = db.define('plot', {
   size: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   shaded: {
-    type: Sequelize.BOOLEAN
-  }
+    type: Sequelize.BOOLEAN,
+  },
 });
 
-const Vegetable = db.define('Vegetable', {
+const Vegetable = db.define('vegetable', {
   name: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
   },
   color: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
   },
   plantedOn: {
-    type: Sequelize.DATE
-  }
+    type: Sequelize.DATE,
+  },
 });
+
+Plot.belongsTo('Gardener');
+Gardener.hasOne('Plot');
 
 Vegetable.belongsToMany(Plot, { through: 'vegetablePlot' });
 Plot.belongsToMany(Vegetable, { through: 'vegetablePlot' });
 
 Gardener.belongsTo(Vegetable, { as: 'favoriteVegetable' });
-
-const art = {
-  name: 'Artichoke',
-  color: 'Green',
-  plantedOn: Date.now()
-};
-
-const egg = {
-  name: 'Eggplant',
-  color: 'Purple',
-  plantedOn: Date.now()
-};
-
-const asp = {
-  name: 'Asparagus',
-  color: 'Green',
-  plantedOn: Date.now() - 10
-};
-
-Promise.all([art, egg, asp]).then((vegetables) => {
-  vegetables.forEach((vegetable) => {
-    Vegetable.create(vegetable);
-  });
-});
 
 module.exports = db;
